@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 fn main() {
 
     // unsigned int is only positive and 2^n range
@@ -81,7 +83,91 @@ fn main() {
         println!("{}", val);
     }
 
+    // vector is dynamic array, still need to add mut to push or remove values
+    let mut vec: Vec<i64> = vec![1,2,3,4,5];
+    vec.len();
+    vec[0];
+    vec.push(6);
+    vec.remove(0);
+    println!("{:?}", vec);
 
+    // Hash maps
+    let mut map = HashMap::new();
+    map.insert(0, "hello");
+    map.insert(1, "hi2");
+    println!("{:?}", map);
+
+    match map.get(&0) {
+        Some(str) => println!("{}", str),
+        _ => println!("Doesn't exist in map")
+    }
+
+    // returns option
+    match map.get(&2) {
+        Some(str) => println!("{}", str),
+        _ => println!("Doesn't exist in map")
+    }
+
+    map.remove(&0);
+    println!("{:?}", map);
+
+    match map.get(&0) {
+        Some(str) => println!("{}", str),
+        _ => println!("Doesn't exist in map")
+    }
+
+    // Options => when we want to get a value from Hashmap
+    // Option always returns None - to indicate a failure-  or Some(Value) - a tuple struct that wraps a value with type T
+    let divide1: Option<i32> = divide(4,2);
+    let divide2: Option<i32> = divide(2,3);
+
+    // Unwrapping a Some variant will extract the value wrapped
+    println!("{:?} unwraps to {}", divide1, divide1.unwrap());
+
+    // Unwrapping a None variant will panic! => Rust version of exception
+    // println!("{:?} unwraps to {}", divide2, divide2.unwrap());
+
+    // Result
+    let divideRes = divideResult(4,2);
+    // match divideRes {
+    //     Ok(v) => println!("{}", v),
+    //     Err(v) => println!("{:?}", v)
+    // }
+
+    if divideRes.is_ok() {
+        println!("{}", divideRes.unwrap());
+    }
+
+    // println!("{}", divideRes.unwrap_or(100)); => will print 100
+    // implement to catch exception:
+    // let res = divideRes.expect("We crashed");
+    // println!("{}", res);
+
+
+}
+
+#[derive(Debug)]
+enum MyError {
+    Error1
+}
+
+// Err, an enum that contains an error Code
+// Ok(value), wrapper that contains a value
+fn divideResult(dividend: i32, divisor: i32) -> Result<i32, MyError> {
+    if dividend % divisor != 0 {
+        Err(MyError::Error1)
+    } else {
+        Ok(dividend/divisor)
+    }
+}
+
+
+fn divide(dividend: i32, divisor: i32) -> Option<i32> {
+    if dividend % divisor != 0 {
+        None
+    } else {
+        Some(dividend/divisor)
+    }
 }
 
 #[derive(Debug)]
